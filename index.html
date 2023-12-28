@@ -10,7 +10,57 @@
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 20px;
-            background-color: #f2f2f2;
+            overflow: hidden;
+        }
+
+        #toggleMode {
+            position: fixed;
+            right: 10px;
+            top: 10px;
+            z-index: 1;
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #menuButton {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            z-index: 1;
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #menuBox {
+            position: fixed;
+            left: -250px;
+            top: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #2c3e50;
+            transition: 0.3s;
+            padding-top: 20px;
+        }
+
+        #language-menu {
+            text-align: left;
+            padding: 0 20px;
+        }
+
+        #language-menu button {
+            display: block;
+            margin: 10px 0;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
         }
 
         video {
@@ -37,6 +87,7 @@
         #videoInfo {
             text-align: left;
             margin-top: 20px;
+            color: #333; /* Adjust text color for dark mode */
         }
 
         select {
@@ -47,16 +98,18 @@
     </style>
 </head>
 <body>
-    <header>
+    <div id="toggleMode" onclick="toggleDarkMode()">Toggle Mode</div>
+    <div id="menuButton" onclick="toggleMenu()">Menu</div>
+
+    <div id="menuBox">
         <div id="language-menu">
             <button onclick="changeLanguage('ro')">Română</button>
             <button onclick="changeLanguage('el')">Ελληνικά</button>
             <button onclick="changeLanguage('en')">English</button>
         </div>
-    </header>
+    </div>
 
     <h1 id="greeting">VDDP - Video</h1>
-    <p id="description">Accesați bune videoclipe VD Dim Player, sau VDDP! Toate videoclipele dvs. vor fi în 1080p, 4K sau 8K!</p>
     <input type="file" accept="video/*" id="videoInput" />
     <br>
     <video controls id="videoPlayer">
@@ -73,8 +126,6 @@
     <div id="videoInfo">
         <strong id="videoNameLabel">Nume Video:</strong> <span id="videoName">Niciun video selectat</span><br>
         <strong id="videoDomainLabel">Domeniu Video:</strong> <span id="videoDomain">Niciun video selectat</span><br>
-        <strong id="videoDescriptionLabel">Descriere:</strong> <span id="videoDescription">Descrierea video va apărea automat aici.</span>
-        <br>
         <strong id="qualityLabel">Calitate:</strong> <span id="quality">4K</span>
         <button onclick="openQualitySelector()">Selectează</button>
     </div>
@@ -83,31 +134,38 @@
         const translations = {
             'ro': {
                 greeting: 'Salut!',
-                description: 'Accesați bune videoclipe VD Dim Player, sau VDDP! Toate videoclipele dvs. vor fi în 1080p, 4K sau 8K!',
                 videoNameLabel: 'Nume Video:',
                 videoDomainLabel: 'Domeniu Video:',
-                videoDescriptionLabel: 'Descriere:',
-                qualityLabel: 'Calitate:'
+                qualityLabel: 'Calitate:',
+                pause: 'Pauză',
+                play: 'Reluare',
+                rewind: 'Înapoi 10s',
+                forward: 'Înainte 10s'
             },
             'el': {
                 greeting: 'Χαίρετε!',
-                description: 'Απολαύστε εξαιρετικά βίντεο με το VD Dim Player ή VDDP! Όλα τα βίντεό σας θα είναι σε ανάλυση 1080p, 4K ή 8K!',
                 videoNameLabel: 'Όνομα Βίντεο:',
                 videoDomainLabel: 'Τομέας Βίντεο:',
-                videoDescriptionLabel: 'Περιγραφή:',
-                qualityLabel: 'Ποιότητα:'
+                qualityLabel: 'Ποιότητα:',
+                pause: 'Παύση',
+                play: 'Αναπαραγωγή',
+                rewind: 'Πίσω 10s',
+                forward: 'Εμπρός 10s'
             },
             'en': {
                 greeting: 'Hello!',
-                description: 'Enjoy great videos with VD Dim Player or VDDP! All your videos will be in 1080p, 4K, or 8K!',
                 videoNameLabel: 'Video Name:',
                 videoDomainLabel: 'Video Domain:',
-                videoDescriptionLabel: 'Description:',
-                qualityLabel: 'Quality:'
+                qualityLabel: 'Quality:',
+                pause: 'Pause',
+                play: 'Play',
+                rewind: 'Rewind 10s',
+                forward: 'Forward 10s'
             }
         };
 
         let currentLanguage = 'ro';
+        let darkMode = false;
 
         function changeLanguage(lang) {
             currentLanguage = lang;
@@ -116,18 +174,29 @@
 
         function applyTranslations() {
             const greetingElement = document.getElementById('greeting');
-            const descriptionElement = document.getElementById('description');
             const videoNameLabelElement = document.getElementById('videoNameLabel');
             const videoDomainLabelElement = document.getElementById('videoDomainLabel');
-            const videoDescriptionLabelElement = document.getElementById('videoDescriptionLabel');
             const qualityLabelElement = document.getElementById('qualityLabel');
 
             greetingElement.textContent = translations[currentLanguage].greeting;
-            descriptionElement.textContent = translations[currentLanguage].description;
             videoNameLabelElement.textContent = translations[currentLanguage].videoNameLabel;
             videoDomainLabelElement.textContent = translations[currentLanguage].videoDomainLabel;
-            videoDescriptionLabelElement.textContent = translations[currentLanguage].videoDescriptionLabel;
             qualityLabelElement.textContent = translations[currentLanguage].qualityLabel;
+        }
+
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            applyDarkMode();
+        }
+
+        function applyDarkMode() {
+            const body = document.body;
+            const videoInfo = document.getElementById('videoInfo');
+
+            body.style.backgroundColor = darkMode ? '#333' : '#f2f2f2';
+            videoInfo.style.color = darkMode ? '#eee' : '#333';
+
+            // You can customize other elements based on dark mode
         }
 
         const videoInput = document.getElementById('videoInput');
@@ -135,7 +204,6 @@
         const volumeControl = document.getElementById('volumeControl');
         const videoNameElement = document.getElementById('videoName');
         const videoDomainElement = document.getElementById('videoDomain');
-        const videoDescriptionElement = document.getElementById('videoDescription');
         const qualityElement = document.getElementById('quality');
 
         videoInput.addEventListener('change', function () {
@@ -150,10 +218,6 @@
 
                 // Display video domain
                 videoDomainElement.textContent = file.type;
-
-                // Set video description
-                const videoDescription = translations[currentLanguage].description;
-                videoDescriptionElement.textContent = videoDescription;
             }
         });
 
@@ -195,6 +259,7 @@
 
         // Initialize translations
         applyTranslations();
+        applyDarkMode();
     </script>
 </body>
 </html>
