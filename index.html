@@ -13,18 +13,6 @@
             overflow: hidden;
         }
 
-        #toggleMode {
-            position: fixed;
-            right: 10px;
-            top: 10px;
-            z-index: 1;
-            background-color: #3498db;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
         #menuButton {
             position: fixed;
             left: 10px;
@@ -39,13 +27,22 @@
 
         #menuBox {
             position: fixed;
-            left: -250px;
+            left: 0;
             top: 0;
             height: 100%;
             width: 250px;
             background-color: #2c3e50;
             transition: 0.3s;
             padding-top: 20px;
+        }
+
+        #toggleMode {
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
         }
 
         #language-menu {
@@ -98,8 +95,7 @@
     </style>
 </head>
 <body>
-    <div id="toggleMode" onclick="toggleDarkMode()">Toggle Mode</div>
-    <div id="menuButton" onclick="toggleMenu()">Menu</div>
+    <div id="menuButton" onclick="toggleMenu()"> · · · </div>
 
     <div id="menuBox">
         <div id="language-menu">
@@ -107,6 +103,7 @@
             <button onclick="changeLanguage('el')">Ελληνικά</button>
             <button onclick="changeLanguage('en')">English</button>
         </div>
+        <div id="toggleMode" onclick="toggleDarkMode()">Toggle Mode</div>
     </div>
 
     <h1 id="greeting">VDDP - Video</h1>
