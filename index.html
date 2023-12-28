@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="CbnwLpSKtL4iQ_6ZCjaDGl3z5RWEQXSR3vi--3ZMhO0" />
+    <title>VDDP România - Video Jucător 1080p-4K-8K</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f2f2f2;
+        }
+
+        video {
+            width: 80%;
+            max-width: 800px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 10px;
+            background-color: #3498db;
+            color: white;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin: 10px auto;
+        }
+
+        #videoInfo {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        select {
+            margin-top: 10px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>VDDP România - Video Jucător 1080p-4K-8K</h1>
+    <p>Accesați bune videoclipe VD Dim Player, sau VDDP! Toate videoclipele dvs. vor fi în 1080p, 4K sau 8K!</p>
+    <input type="file" accept="video/*" id="videoInput" />
+    <br>
+    <video controls id="videoPlayer">
+        Browserul dvs. nu suportă eticheta video.
+    </video>
+    <br>
+    <button onclick="pauseVideo()">Pauză</button>
+    <button onclick="unpauseVideo()">Reluare</button>
+    <button onclick="rewindVideo()">Înapoi 10s</button>
+    <button onclick="forwardVideo()">Înainte 10s</button>
+    <br>
+    <input type="range" id="volumeControl" min="0" max="100" step="1" value="100" oninput="setVolume(this.value)" />
+    <br>
+    <div id="videoInfo">
+        <strong>Nume Video:</strong> <span id="videoName">Niciun video selectat</span><br>
+        <strong>Domeniu Video:</strong> <span id="videoDomain">Niciun video selectat</span><br>
+        <strong>Descriere:</strong> <span id="videoDescription">Descrierea video va apărea automat aici.</span>
+        <br>
+        <strong>Calitate:</strong> <span id="quality">4K</span>
+        <button onclick="openQualitySelector()">Selectează</button>
+    </div>
+
+    <script>
+        const videoInput = document.getElementById('videoInput');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const volumeControl = document.getElementById('volumeControl');
+        const videoNameElement = document.getElementById('videoName');
+        const videoDomainElement = document.getElementById('videoDomain');
+        const videoDescriptionElement = document.getElementById('videoDescription');
+        const qualityElement = document.getElementById('quality');
+
+        videoInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const objectURL = URL.createObjectURL(file);
+                videoPlayer.src = objectURL;
+
+                // Format video name
+                const formattedName = formatVideoName(file.name);
+                videoNameElement.textContent = formattedName;
+
+                // Display video domain
+                videoDomainElement.textContent = file.type;
+
+                // Set video description
+                const videoDescription = `Accesați bune videoclipe VD Dim Player, sau VDDP! Toate videoclipele dvs. vor fi în 1080p, 4K sau 8K!`;
+                videoDescriptionElement.textContent = videoDescription;
+            }
+        });
+
+        function formatVideoName(name) {
+            // Remove numbers, underscores, and dots. Capitalize each word.
+            return name.replace(/[0-9_.]/g, '').replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        }
+
+        function pauseVideo() {
+            if (!videoPlayer.paused) {
+                videoPlayer.pause();
+            }
+        }
+
+        function unpauseVideo() {
+            if (videoPlayer.paused) {
+                videoPlayer.play();
+            }
+        }
+
+        function rewindVideo() {
+            videoPlayer.currentTime -= 10;
+        }
+
+        function forwardVideo() {
+            videoPlayer.currentTime += 10;
+        }
+
+        function setVolume(volume) {
+            videoPlayer.volume = volume / 100;
+        }
+
+        function openQualitySelector() {
+            const qualitySelector = prompt('Selectează calitatea (1080p, 4K, 8K):');
+            if (qualitySelector) {
+                qualityElement.tex
