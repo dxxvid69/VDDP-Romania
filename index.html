@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="CbnwLpSKtL4iQ_6ZCjaDGl3z5RWEQXSR3vi--3ZMhO0" />
-    <title>VDDP | 🎥</title>
+    <title>Video Dim Player</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -85,10 +85,14 @@
         Browserul dvs. nu suportă eticheta video.
     </video>
     <br>
-    <button onclick="pauseVideo()">Pauză</button>
-    <button onclick="unpauseVideo()">Reluare</button>
-    <button onclick="rewindVideo()">Înapoi 10s</button>
-    <button onclick="forwardVideo()">Înainte 10s</button>
+    <button onclick="pauseVideo()">II
+</button>
+    <button onclick="unpauseVideo()">▷
+</button>
+    <button onclick="rewindVideo()">↻
+</button>
+    <button onclick="forwardVideo()">↺
+</button>
     <br>
     <input type="range" id="volumeControl" min="0" max="100" step="1" value="100" oninput="setVolume(this.value)" />
     <br>
@@ -237,7 +241,7 @@
         }
 
         function openQualitySelector() {
-            const qualitySelector = prompt('Selectează calitatea (1080p, 4K, 8K, 12K, 16K, 24K):');
+            const qualitySelector = prompt('Select/selecteaza/διάλεξε (1080p, 4K, 8K, 12K, 16K, 24K):');
             if (qualitySelector) {
                 qualityElement.textContent = qualitySelector;
             }
