@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="CbnwLpSKtL4iQ_6ZCjaDGl3z5RWEQXSR3vi--3ZMhO0" />
-    <title>VDDP - Video</title>
+    <title>VDDP ROM/GB/GR - 1080p, 4K, 8K, 12K, 16K, 24K</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -59,6 +59,8 @@
         input[type="file"] {
             display: block;
             margin: 10px auto;
+            color: #333; /* Adjust text color for dark mode */
+            background-color: #fff; /* Adjust background color for dark mode */
         }
 
         #videoInfo {
@@ -90,8 +92,8 @@
     <input type="range" id="volumeControl" min="0" max="100" step="1" value="100" oninput="setVolume(this.value)" />
     <br>
     <div id="videoInfo">
-        <strong id="videoNameLabel">Nume Video:</strong> <span id="videoName">Niciun video selectat</span><br>
-        <strong id="videoDomainLabel">Domeniu Video:</strong> <span id="videoDomain">Niciun video selectat</span><br>
+        <strong id="videoNameLabel">Nume Video:</strong> <span id="videoName">-</span><br>
+        <strong id="videoDomainLabel">Domeniu Video:</strong> <span id="videoDomain">-</span><br>
         <strong id="qualityLabel">Calitate:</strong> <span id="quality">4K</span>
         <button onclick="openQualitySelector()">Selectează</button>
     </div>
@@ -113,7 +115,8 @@
                 pause: 'Pauză',
                 play: 'Reluare',
                 rewind: 'Înapoi 10s',
-                forward: 'Înainte 10s'
+                forward: 'Înainte 10s',
+                noVideoSelected: 'Niciun video selectat'
             },
             'el': {
                 greeting: 'Χαίρετε!',
@@ -123,7 +126,8 @@
                 pause: 'Παύση',
                 play: 'Αναπαραγωγή',
                 rewind: 'Πίσω 10s',
-                forward: 'Εμπρός 10s'
+                forward: 'Εμπρός 10s',
+                noVideoSelected: 'Κανένα επιλεγμένο βίντεο'
             },
             'en': {
                 greeting: 'Hello!',
@@ -133,7 +137,8 @@
                 pause: 'Pause',
                 play: 'Play',
                 rewind: 'Rewind 10s',
-                forward: 'Forward 10s'
+                forward: 'Forward 10s',
+                noVideoSelected: 'No video selected'
             }
         };
 
@@ -171,7 +176,7 @@
             videoInfo.style.color = darkMode ? '#eee' : '#333';
 
             // You can customize other elements based on dark mode
-            videoPlayer.style.display = darkMode ? 'none' : 'block';
+            videoPlayer.style.display = darkMode ? 'block' : 'none';
         }
 
         const videoInput = document.getElementById('videoInput');
@@ -193,6 +198,9 @@
 
                 // Display video domain
                 videoDomainElement.textContent = file.type;
+
+                // Set default quality (you can change this as needed)
+                qualityElement.textContent = '4K';
             }
         });
 
@@ -226,9 +234,17 @@
         }
 
         function openQualitySelector() {
-            const qualitySelector = prompt('Selectează calitatea (1080p, 4K, 8K):');
-            if (qualitySelector) {
-                qualityElement.textContent = qualitySelector;
+            const qualitySelector = prompt('Selecteazâ/Select/Διαλέξτε (1080p, 4K, 8K, 12K, 16K, 24K):');
+            const validQualities = ['1080p', '4K', '8K', '12K', '16K', '24K'];
+            if (qualitySelector && validQualities.includes(qualitySelector.toUpperCase())) {
+                qualityElement.textContent = qualitySelector.toUpperCase();
+
+                // Update video source based on selected quality
+                const currentSource = videoPlayer.src;
+                const newSource = currentSource.replace(/\d+K/, qualitySelector.toUpperCase());
+                videoPlayer.src = newSource;
+            } else {
+                alert('Invalid/Invalid/Λανθασμένο! (1080p, 4K, 8K, 12K, 16K, 24K).');
             }
         }
 
