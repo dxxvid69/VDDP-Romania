@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="CbnwLpSKtL4iQ_6ZCjaDGl3z5RWEQXSR3vi--3ZMhO0" />
-    <title>VDDP România - Video Jucător 1080p-4K-8K</title>
+    <title>VDDP - Video</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,8 +47,16 @@
     </style>
 </head>
 <body>
-    <h1>VDDP România - Video Jucător 1080p-4K-8K</h1>
-    <p>Accesați bune videoclipe VD Dim Player, sau VDDP! Toate videoclipele dvs. vor fi în 1080p, 4K sau 8K!</p>
+    <header>
+        <div id="language-menu">
+            <button onclick="changeLanguage('ro')">Română</button>
+            <button onclick="changeLanguage('el')">Ελληνικά</button>
+            <button onclick="changeLanguage('en')">English</button>
+        </div>
+    </header>
+
+    <h1 id="greeting">VDDP - Video</h1>
+    <p id="description">Accesați bune videoclipe VD Dim Player, sau VDDP! Toate videoclipele dvs. vor fi în 1080p, 4K sau 8K!</p>
     <input type="file" accept="video/*" id="videoInput" />
     <br>
     <video controls id="videoPlayer">
@@ -63,15 +71,65 @@
     <input type="range" id="volumeControl" min="0" max="100" step="1" value="100" oninput="setVolume(this.value)" />
     <br>
     <div id="videoInfo">
-        <strong>Nume Video:</strong> <span id="videoName">Niciun video selectat</span><br>
-        <strong>Domeniu Video:</strong> <span id="videoDomain">Niciun video selectat</span><br>
-        <strong>Descriere:</strong> <span id="videoDescription">Descrierea video va apărea automat aici.</span>
+        <strong id="videoNameLabel">Nume Video:</strong> <span id="videoName">Niciun video selectat</span><br>
+        <strong id="videoDomainLabel">Domeniu Video:</strong> <span id="videoDomain">Niciun video selectat</span><br>
+        <strong id="videoDescriptionLabel">Descriere:</strong> <span id="videoDescription">Descrierea video va apărea automat aici.</span>
         <br>
-        <strong>Calitate:</strong> <span id="quality">4K</span>
+        <strong id="qualityLabel">Calitate:</strong> <span id="quality">4K</span>
         <button onclick="openQualitySelector()">Selectează</button>
     </div>
 
     <script>
+        const translations = {
+            'ro': {
+                greeting: 'Salut!',
+                description: 'Accesați bune videoclipe VD Dim Player, sau VDDP! Toate videoclipele dvs. vor fi în 1080p, 4K sau 8K!',
+                videoNameLabel: 'Nume Video:',
+                videoDomainLabel: 'Domeniu Video:',
+                videoDescriptionLabel: 'Descriere:',
+                qualityLabel: 'Calitate:'
+            },
+            'el': {
+                greeting: 'Χαίρετε!',
+                description: 'Απολαύστε εξαιρετικά βίντεο με το VD Dim Player ή VDDP! Όλα τα βίντεό σας θα είναι σε ανάλυση 1080p, 4K ή 8K!',
+                videoNameLabel: 'Όνομα Βίντεο:',
+                videoDomainLabel: 'Τομέας Βίντεο:',
+                videoDescriptionLabel: 'Περιγραφή:',
+                qualityLabel: 'Ποιότητα:'
+            },
+            'en': {
+                greeting: 'Hello!',
+                description: 'Enjoy great videos with VD Dim Player or VDDP! All your videos will be in 1080p, 4K, or 8K!',
+                videoNameLabel: 'Video Name:',
+                videoDomainLabel: 'Video Domain:',
+                videoDescriptionLabel: 'Description:',
+                qualityLabel: 'Quality:'
+            }
+        };
+
+        let currentLanguage = 'ro';
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            applyTranslations();
+        }
+
+        function applyTranslations() {
+            const greetingElement = document.getElementById('greeting');
+            const descriptionElement = document.getElementById('description');
+            const videoNameLabelElement = document.getElementById('videoNameLabel');
+            const videoDomainLabelElement = document.getElementById('videoDomainLabel');
+            const videoDescriptionLabelElement = document.getElementById('videoDescriptionLabel');
+            const qualityLabelElement = document.getElementById('qualityLabel');
+
+            greetingElement.textContent = translations[currentLanguage].greeting;
+            descriptionElement.textContent = translations[currentLanguage].description;
+            videoNameLabelElement.textContent = translations[currentLanguage].videoNameLabel;
+            videoDomainLabelElement.textContent = translations[currentLanguage].videoDomainLabel;
+            videoDescriptionLabelElement.textContent = translations[currentLanguage].videoDescriptionLabel;
+            qualityLabelElement.textContent = translations[currentLanguage].qualityLabel;
+        }
+
         const videoInput = document.getElementById('videoInput');
         const videoPlayer = document.getElementById('videoPlayer');
         const volumeControl = document.getElementById('volumeControl');
@@ -80,7 +138,7 @@
         const videoDescriptionElement = document.getElementById('videoDescription');
         const qualityElement = document.getElementById('quality');
 
-        videoInput.addEventListener('change', function() {
+        videoInput.addEventListener('change', function () {
             const file = this.files[0];
             if (file) {
                 const objectURL = URL.createObjectURL(file);
@@ -94,14 +152,14 @@
                 videoDomainElement.textContent = file.type;
 
                 // Set video description
-                const videoDescription = `Accesați bune videoclipe VD Dim Player, sau VDDP! Toate videoclipele dvs. vor fi în 1080p, 4K sau 8K!`;
+                const videoDescription = translations[currentLanguage].description;
                 videoDescriptionElement.textContent = videoDescription;
             }
         });
 
         function formatVideoName(name) {
             // Remove numbers, underscores, and dots. Capitalize each word.
-            return name.replace(/[0-9_.]/g, '').replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+            return name.replace(/[0-9_.]/g, '').replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
         }
 
         function pauseVideo() {
@@ -131,4 +189,12 @@
         function openQualitySelector() {
             const qualitySelector = prompt('Selectează calitatea (1080p, 4K, 8K):');
             if (qualitySelector) {
-                qualityElement.tex
+                qualityElement.textContent = qualitySelector;
+            }
+        }
+
+        // Initialize translations
+        applyTranslations();
+    </script>
+</body>
+</html>
